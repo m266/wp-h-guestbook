@@ -16,7 +16,8 @@ defined('ABSPATH') || exit();
 
 /* Plugin-Updater */
 require 'plugin-update-checker/plugin-update-checker.php';
-$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://github.com/m266/beispiel-plugin-with-submenu', __FILE__, 'beispiel-plugin-with-submenu');
+$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://github.com/m266/wp-h-guestbook', __FILE__, 'wp-h-guestbook');
+
 // Add settings link on plugin page
 function wphgb_plugin_settings_link($links) {
   $settings_link = '<a href="options-general.php?page=wp-h-guestbook">Einstellungen</a>';
