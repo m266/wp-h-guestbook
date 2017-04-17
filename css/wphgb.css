@@ -1,0 +1,11 @@
+/* Kommentarformular ausblenden */
+.gb-comments-area .comment-respond {
+  display: block;
+}
+.comment-respond {
+  display: none;
+}
+/* Antworten-Button ausblenden */
+.reply {
+  display: none;
+}
