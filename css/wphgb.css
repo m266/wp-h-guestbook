@@ -9,3 +9,12 @@
 .reply {
   display: none;
 }
+/* Anzahl der Gaestebuch-Eintraege */
+.gb-count {
+  border-top-width: 2px;
+  border-top-width: 0.125rem;
+}
+/* Titel der Kommentar-Liste ausblenden */
+.comments-title {
+  display: none;
+}
