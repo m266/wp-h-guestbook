@@ -1,6 +1,6 @@
 ﻿=== WP H-Guestbook ===
 Requires at least: 4.0
-Tested up to: 4.7.4
+Tested up to: 4.8
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,8 +15,15 @@ Gästebuch auf Grundlage der Kommentarfunktion
 3. Configure the plugin in Dashboard -> WP H-Guestbook
 
 == Changelog ==
+Version 1.1.0
+1. Texteingabe oberhalb Plugin-Shortcode möglich
+2. Meldung ausgeben, wenn Seiten-ID des Gästebuchs fehlt
+3. Anzeigetext für GB-Einträge unabhängig vom Theme
+4. Anzeige der GB-Einträge im Widget "Auf einen Blick"
+5. Layout der Plugin-Seite verbessert
+
 Version 1.0.1
-1. GB-Icon Buch eingefuegt
+1. GB-Icon Buch eingefügt
 
 Version 1.0.0
 1. Initial release
