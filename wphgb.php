@@ -6,8 +6,8 @@ Plugin URI:    https://github.com/m266/wp-h-guestbook
 Description:   Gästebuch auf Grundlage der Kommentarfunktion
 Author:        Hans M. Herbrand
 Author URI:    https://www.web266.de
-Version:       1.1.0
-Date:          2017-07-24
+Version:       1.1.1
+Date:          2017-08-28
 License:       GNU General Public License v2 or later
 License URI:   http://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -29,7 +29,7 @@ add_filter("plugin_action_links_$plugin", 'wphgb_plugin_settings_link');
 add_action('admin_menu', 'wphgb_add_admin_menu');
 add_action('admin_init', 'wphgb_settings_init');
 function wphgb_add_admin_menu() {
-  add_menu_page('WP H-Guestbook', 'WP H-Guestbook', 'manage_options', 'wp-h-guestbook', 'wphgb_options_page', plugin_dir_url(__FILE__) . 'images/wphgb_icon.png');
+  add_menu_page('WP H-Guestbook', 'WP H-Guestbook', 'manage_options', 'wp-h-guestbook', 'wphgb_options_page', 'dashicons-book-alt');
   add_submenu_page('wp-h-guestbook', 'WP H-Guestbook', 'Einstellungen', 'manage_options', 'wp-h-guestbook', 'wphgb_options_page');
 }
 function wphgb_settings_init() {
