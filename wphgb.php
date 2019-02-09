@@ -5,122 +5,162 @@ Plugin URI:    https://github.com/m266/wp-h-guestbook
 Description:   Gästebuch auf Grundlage der Kommentarfunktion
 Author:        Hans M. Herbrand
 Author URI:    https://www.web266.de
-Version:       1.1.4
-Date:          2018-12-26
+Version:       1.2.0
+Date:          2019-02-07
 License:       GNU General Public License v2 or later
 License URI:   http://www.gnu.org/licenses/gpl-2.0.html
 GitHub Plugin URI: https://github.com/m266/wp-h-guestbook
  */
 // Externer Zugriff verhindern
 defined('ABSPATH') || exit();
-// GitHub-Updater aktiv?
-// Makes sure the plugin is defined before trying to use it
-if (!function_exists('is_plugin_active')) {
-    require_once ABSPATH . '/wp-admin/includes/plugin.php';
-}
-// Makes sure the plugin is defined before trying to use it
-if (!function_exists('is_plugin_inactive')) {
-    require_once ABSPATH . '/wp-admin/includes/plugin.php';
-}
-// GitHub-Updater inaktiv?
-if (is_plugin_inactive('github-updater/github-updater.php')) {
-    // Plugin ist inaktiv
-    // Plugin-Name im Meldungstext anpassen
-    function wphgb_missing_github_updater_notice() {; // GitHub-Updater fehlt
-        ?>
-    <div class="error notice">  <!-- Wenn ja, Meldung ausgeben -->
-        <p><?php _e('Bitte das Plugin <a href="https://www.web266.de/tutorials/github/github-updater/" target="_blank">
-        <b>"GitHub-Updater"</b></a> herunterladen, installieren und aktivieren.
-        Ansonsten werden keine weiteren Updates f&uuml;r das Plugin <b>"WP H-Guestbook"</b> bereit gestellt!');?></p>
-    </div>
-                        <?php
-}
-    add_action('admin_notices', 'wphgb_missing_github_updater_notice');
-}
-// Add settings link on plugin page
-function wphgb_plugin_settings_link($links) {
-    $settings_link = '<a href="options-general.php?page=wp-h-guestbook">Einstellungen</a>';
-    array_unshift($links, $settings_link);
-    return $links;
-}
-$plugin = plugin_basename(__FILE__);
-add_filter("plugin_action_links_$plugin", 'wphgb_plugin_settings_link');
-// Admin-Menu
-add_action('admin_menu', 'wphgb_add_admin_menu');
-add_action('admin_init', 'wphgb_settings_init');
-function wphgb_add_admin_menu() {
-    add_menu_page('WP H-Guestbook', 'WP H-Guestbook', 'manage_options', 'wp-h-guestbook', 'wphgb_options_page', 'dashicons-book-alt');
-    add_submenu_page('wp-h-guestbook', 'WP H-Guestbook', 'Einstellungen', 'manage_options', 'wp-h-guestbook', 'wphgb_options_page');
-}
-function wphgb_settings_init() {
-    register_setting('wphgb', 'wphgb_settings');
-    add_settings_section('wphgb_section', __('', 'wordpress'), 'wphgb_settings_section_callback', 'wphgb');
-    add_settings_field('wphgb_text_field_0', __('Seiten-ID', 'wordpress'), 'wphgb_text_field_0_render', 'wphgb', 'wphgb_section');
-}
-function wphgb_text_field_0_render() {
-    $options = get_option('wphgb_settings');
-    ?>
-  <input type='text' name='wphgb_settings[wphgb_text_field_0]'
-            <?php
-$isChecked = !empty($options['wphgb_text_field_0']); // Notice: Undefined index (leere Variable) beseitigt
-    checked($isChecked, 1);
-    ?>
-   value='<?php echo $options['wphgb_text_field_0']; ?>'>
-          <?php
-}
-// Meldung ausgeben, wenn Seiten-ID des Gästebuchs fehlt
-$options = get_option('wphgb_settings');
-if (empty($options['wphgb_text_field_0'])) {
-    function creation_missing_page_id_notice() {; // Fehlt die Seiten-ID?
-        ?>
-    <div class="error notice">  <!-- Wenn ja, Meldung ausgeben -->
-        <p><?php _e('Bitte die Seiten-ID der G&auml;stebuch-Seite im Plugin <a href="admin.php?page=wp-h-guestbook"><b>"WP H-Guestbook"</b></a> eingeben!');?></p>
-    </div>
-                        <?php
-}
-    add_action('admin_notices', 'creation_missing_page_id_notice');
-}
-function wphgb_settings_section_callback() {
-    //  echo __('Bitte die Seiten-ID der Gästebuch-Seite eingeben (siehe Kurzanleitung unten):', 'wordpress');  // Ersetzt durch Admin Notice (siehe oben)
-}
-function wphgb_options_page() {
-    ?>
-  <?php settings_errors();?> <!-- Meldung ausgeben -->
-<!-- Eingabeformular für die Optionen -->
-<form action='options.php' method='post'>
-<div class="wrap"><div id="icon-options-general" class="icon32"><br></div>
-<h2>
-          <?php
-// Plugin-Name und Versions-Nummer ermitteln
-    function wpht_plugin_name_get_data() {
-        $wpht_plugin_data = get_plugin_data(__FILE__);
-        $wpht_plugin_name = $wpht_plugin_data['Name'];
-        $wpht_plugin_version = $wpht_plugin_data['Version'];
-        $wpht_plugin_name_version = $wpht_plugin_name . " " . $wpht_plugin_version;
-        return $wpht_plugin_name_version;
+
+// Plugin defined, GitHub einbinden (Plugin-Name im Meldungstext anpassen)
+require_once 'inc/wphgb_plugin_defined_github.php';
+
+// Option Page
+class WPHGB {
+    private $wphgb_options;
+
+    public function __construct() {
+        add_action('admin_menu', array($this, 'wphgb_add_plugin_page'));
+        add_action('admin_init', array($this, 'wphgb_page_init'));
     }
-    $wpht_menu_name_version = wpht_plugin_name_get_data();
-    echo $wpht_menu_name_version . " > " . "Einstellungen"; // Plugin-Name und Versions-Nummer ausgeben
-    ?>
+
+    public function wphgb_add_plugin_page() {
+        add_menu_page(
+            'WP-H-Guestbook', // page_title
+            'WP-H-Guestbook', // menu_title
+            'manage_options', // capability
+            'wphgb', // menu_slug
+            array($this, 'wphgb_create_admin_page'), // function
+            'dashicons-book', // icon_url
+            81// position
+        );
+    }
+
+    public function wphgb_create_admin_page() {
+        $this->wphgb_options = get_option('wphgb_option_name');?>
+
+        <div class="wrap">
+        <h2>
+                    <?php
+// Plugin-Name und Versions-Nummer ermitteln
+        function wphgb_plugin_name_get_data() {
+            $wphgb_plugin_data = get_plugin_data(__FILE__);
+            $wphgb_plugin_name = $wphgb_plugin_data['Name'];
+            $wphgb_plugin_version = $wphgb_plugin_data['Version'];
+            $wphgb_plugin_name_version = $wphgb_plugin_name . " " .
+                $wphgb_plugin_version;
+            return $wphgb_plugin_name_version;
+        }
+        $wphgb_plugin_name_version = wphgb_plugin_name_get_data();
+        echo $wphgb_plugin_name_version . " > " . "Einstellungen"; // Plugin-Name und Versions-Nummer ausgeben
+        ?>
 </h2>
 <div class="card">
-          <?php
-settings_fields('wphgb');
-    do_settings_sections('wphgb');
-    submit_button();
-    ?>
-</form>
-</div>
-          <?php
-// Hilfe-Seite einbinden
-    require_once 'admin/wphgb_help.php';
+        <h3><b>(Das Plugin ist auf <a href="https://web266.de/software/eigene-plugins/wp-h-guestbook/" target="_blank">web266.de</a> detailliert beschrieben)<br>
+        <a href="https://web266.de/software/eigene-plugins/wp-h-guestbook/kurzanleitung/" target="_blank"><br>Kurzanleitung...</a></h3></b>
+            <hr>
+            <?php settings_errors();?>
+
+            <form method="post" action="options.php">
+                <?php
+settings_fields('wphgb_option_group');
+        do_settings_sections('wphgb-admin');
+        submit_button();
+        ?>
+            </form>
+        </div>
+        </div>
+<!-- Meldung ausgeben, wenn Seiten-ID des Gästebuchs fehlt -->
+<?php require_once 'inc/wphgb_missing_page_id.php';?>
+    <?php
 }
+
+    public function wphgb_page_init() {
+        register_setting(
+            'wphgb_option_group', // option_group
+            'wphgb_option_name', // option_name
+            array($this, 'wphgb_sanitize') // sanitize_callback
+        );
+
+        add_settings_section(
+            'wphgb_setting_section', // id
+            'Settings', // title
+            array($this, 'wphgb_section_info'), // callback
+            'wphgb-admin' // page
+        );
+
+        add_settings_field(
+            'seiten_id_0', // id
+            'Seiten-ID der G&auml;stebuchseite', // title
+            array($this, 'seiten_id_0_callback'), // callback
+            'wphgb-admin', // page
+            'wphgb_setting_section' // section
+        );
+
+        add_settings_field(
+            'eigener_css_code_1', // id
+            'Eigener CSS-Code (optionale Eingabe)', // title
+            array($this, 'eigener_css_code_1_callback'), // callback
+            'wphgb-admin', // page
+            'wphgb_setting_section' // section
+        );
+    }
+
+    public function wphgb_sanitize($input) {
+        $sanitary_values = array();
+        if (isset($input['seiten_id_0'])) {
+            $sanitary_values['seiten_id_0'] = sanitize_text_field(
+                $input['seiten_id_0']);
+        }
+
+        if (isset($input['eigener_css_code_1'])) { // Keine PHP/HTML-Tags erlaubt
+            $sanitary_values['eigener_css_code_1'] = strip_tags(
+                $input['eigener_css_code_1']);
+        }
+
+        return $sanitary_values;
+    }
+
+    public function wphgb_section_info() {
+    }
+
+    public function seiten_id_0_callback() { // Nur Ziffern erlaubt
+        printf(
+
+            '<input class="regular-text" type="number" name="wphgb_option_name[seiten_id_0]" id="seiten_id_0" value="%s" required>',
+            isset($this->wphgb_options['seiten_id_0']) ? esc_attr($this
+                    ->wphgb_options['seiten_id_0']) : ''
+            );
+        }
+
+        public function eigener_css_code_1_callback() {
+            printf(
+
+                '<textarea class="large-text" rows="5" name="wphgb_option_name[eigener_css_code_1]" id="eigener_css_code_1">%s</textarea>',
+                isset($this->wphgb_options['eigener_css_code_1']) ? esc_attr(
+                $this->wphgb_options['eigener_css_code_1']) : ''
+        );
+    }
+}
+if (is_admin()) {
+    $wphgb = new WPHGB();
+}
+
+/*
+ * Retrieve this value with:
+ * $wphgb_options = get_option( 'wphgb_option_name' ); // Array of All Options
+ * $seiten_id_0 = $wphgb_options['seiten_id_0']; // Seiten-ID
+ * $eigener_css_code_1 = $wphgb_options['eigener_css_code_1']; // Eigener CSS-Code
+ */
+
 ?>
 <?php
-// CSS für Gästebuch einbinden
-require_once 'admin/wphgb_css.php';
+// CSS und eigener CSS-Code einbinden
+require_once 'inc/wphgb_css.php';
 // Formular einbinden
-require_once 'admin/wphgb_form.php';
+require_once 'inc/wphgb_form.php';
 // Eintrag für At a glance einbinden
-require_once 'admin/wphgb_at_a_glance.php';
+require_once 'inc/wphgb_at_a_glance.php';
 ?>
