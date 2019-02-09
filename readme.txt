@@ -15,6 +15,9 @@ Gästebuch auf Grundlage der Kommentarfunktion
 3. Configure the plugin in Dashboard -> WP H-Guestbook
 
 == Changelog ==
+Version 1.2.1
+1. Zusätzliche Meldung im Dashboard, wenn Seiten-ID fehlt
+
 Version 1.2.0
 1. Getestet bis 5.0.3
 2. Neuprogrammierung

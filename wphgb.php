@@ -5,8 +5,8 @@ Plugin URI:    https://github.com/m266/wp-h-guestbook
 Description:   Gästebuch auf Grundlage der Kommentarfunktion
 Author:        Hans M. Herbrand
 Author URI:    https://www.web266.de
-Version:       1.2.0
-Date:          2019-02-09
+Version:       1.2.1
+Date:          2019-02-10
 License:       GNU General Public License v2 or later
 License URI:   http://www.gnu.org/licenses/gpl-2.0.html
 GitHub Plugin URI: https://github.com/m266/wp-h-guestbook
@@ -16,6 +16,9 @@ defined('ABSPATH') || exit();
 
 // Plugin defined, GitHub einbinden (Plugin-Name im Meldungstext anpassen)
 require_once 'inc/wphgb_plugin_defined_github.php';
+
+// Meldung ausgeben, wenn Seiten-ID des Gästebuchs fehlt
+require_once 'inc/wphgb_missing_page_id.php';
 
 // Option Page
 class WPHGB {
@@ -72,8 +75,17 @@ settings_fields('wphgb_option_group');
             </form>
         </div>
         </div>
-<!-- Meldung ausgeben, wenn Seiten-ID des Gästebuchs fehlt -->
-<?php require_once 'inc/wphgb_missing_page_id.php';?>
+<?php
+// Meldung ausgeben, wenn Seiten-ID des Gästebuchs fehlt
+$wphgb_options = get_option('wphgb_option_name'); // Array of All Options
+if (empty($wphgb_options['seiten_id_0'])) {
+    ?>
+    <div class="error notice">  <!-- Wenn ja, Meldung ausgeben -->
+        <p><?php _e('Bitte die Seiten-ID der G&auml;stebuch-Seite im Plugin <b>"WP H-Guestbook"</b></a> eingeben!');?></p>
+    </div>
+<?php
+}
+?>
     <?php
 }
 
