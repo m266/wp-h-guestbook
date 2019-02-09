@@ -6,7 +6,7 @@ Description:   Gästebuch auf Grundlage der Kommentarfunktion
 Author:        Hans M. Herbrand
 Author URI:    https://www.web266.de
 Version:       1.2.0
-Date:          2019-02-07
+Date:          2019-02-09
 License:       GNU General Public License v2 or later
 License URI:   http://www.gnu.org/licenses/gpl-2.0.html
 GitHub Plugin URI: https://github.com/m266/wp-h-guestbook
@@ -86,7 +86,7 @@ settings_fields('wphgb_option_group');
 
         add_settings_section(
             'wphgb_setting_section', // id
-            'Settings', // title
+            'Einstellungen', // title
             array($this, 'wphgb_section_info'), // callback
             'wphgb-admin' // page
         );
