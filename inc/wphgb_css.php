@@ -4,7 +4,7 @@
 $options = get_option( 'wphgb_settings' ); // Array of All Options
 $eigener_css_code_1 = ""; // Notice: Undefined index (leere Variable) beseitigt
 $wphgb_text_field_0 = $options['wphgb_text_field_0']; // Seiten-ID
-$eigener_css_code_1 = $options['eigener_css_code_1']; // Eigener CSS-Code
+$eigener_css_code_1 = (isset($options['eigener_css_code_1'])); // Eigener CSS-Code
 $wphgb_gb_page = $wphgb_text_field_0;
 // Seiten-Name der Gästebuch-Seite ermitteln
 function wphgb_plugin_page_id() {

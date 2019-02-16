@@ -15,6 +15,9 @@ Gästebuch auf Grundlage der Kommentarfunktion
 3. Configure the plugin in Dashboard -> WP H-Guestbook
 
 == Changelog ==
+Version 1.2.3
+1. Admin notice beseitigt
+
 Version 1.2.2
 1. Code optimiert
 
