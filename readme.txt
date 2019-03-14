@@ -1,6 +1,6 @@
 ﻿=== WP H-Guestbook ===
 Requires at least: 4.0
-Tested up to: 5.0.3
+Tested up to: 5.1.1
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,9 @@ Gästebuch auf Grundlage der Kommentarfunktion
 3. Configure the plugin in Dashboard -> WP H-Guestbook
 
 == Changelog ==
+Version 1.2.4
+1. Plugintitel berichtigt
+
 Version 1.2.3
 1. Admin notice beseitigt
 
