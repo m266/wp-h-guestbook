@@ -15,6 +15,9 @@ Gästebuch auf Grundlage der Kommentarfunktion
 3. Configure the plugin in Dashboard -> WP H-Guestbook
 
 == Changelog ==
+Version 1.3.1
+1. Feld "Nachricht" ist jetzt ein Pflichtfeld
+
 Version 1.3
 1. Code überarbeitet
 2. Eingabe der Gästebuch-ID entfällt

@@ -46,7 +46,7 @@ $comments_args = array('title_reply' =>
         'comment_notes_after' => '', 'label_submit' => 'Senden', // Absende-Button beschriften
         'comment_field' =>
 
-        '<p class="comment-form-comment"><label for="comment">Nachricht</label><br /><textarea id="comment" name="comment"></textarea></p>');
+        '<p class="comment-form-comment"><label for="comment">Nachricht<span class="required"> *</span></label><br /><textarea id="comment" name="comment"></textarea></p>');
     comment_form($comments_args);
     ?>
 </div>  <!-- End GB-Class -->
