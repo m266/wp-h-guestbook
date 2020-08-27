@@ -2,7 +2,9 @@
 // Gästebuch-Formular
 // Eigener CSS-Code aus Datenbank auslesen
 $wphgb_options = get_option('wphgb_option_name'); // Array of All Options
-$eigener_css_code_1 = $wphgb_options['eigener_css_code_1']; // Eigener CSS-Code
+if(!empty($wphgb_options['eigener_css_code_1'])) {   // Admin notice beseitigt
+$eigener_css_code_1 = ($wphgb_options['eigener_css_code_1']); // Eigener CSS-Code hinzufuegen
+}
 function wphgb_form_function() {
     global $eigener_css_code_1;
     global $gb_id;
