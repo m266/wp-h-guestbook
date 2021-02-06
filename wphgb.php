@@ -5,17 +5,14 @@ Plugin URI:    https://github.com/m266/wp-h-guestbook
 Description:   Gästebuch auf Grundlage der Kommentarfunktion
 Author:        Hans M. Herbrand
 Author URI:    https://www.web266.de
-Version:       1.3.2
-Date:          2020-08-27
+Version:       1.4
+Date:          2021-02-06
 License:       GNU General Public License v2 or later
 License URI:   http://www.gnu.org/licenses/gpl-2.0.html
 GitHub Plugin URI: https://github.com/m266/wp-h-guestbook
  */
 // Externer Zugriff verhindern
 defined('ABSPATH') || exit();
-
-// Plugin defined, GitHub einbinden (Plugin-Name im Meldungstext anpassen)
-require_once 'inc/wphgb_plugin_defined_github.php';
 
 // Option Page
 class WPHGB {
@@ -58,9 +55,19 @@ class WPHGB {
         ?>
 </h2>
 <div class="card">
-        <h3><b>(Das Plugin ist auf <a href="https://web266.de/software/eigene-plugins/wp-h-guestbook/" target="_blank">web266.de</a> detailliert beschrieben)<br>
-        <a href="https://web266.de/software/eigene-plugins/wp-h-guestbook/kurzanleitung/" target="_blank"><br>Kurzanleitung...</a></h3></b>
-            <hr>
+
+<?php
+// GitHub-Updater inaktiv?
+        if (!function_exists('is_plugin_inactive')) {
+            require_once ABSPATH . '/wp-admin/includes/plugin.php';
+        }
+        if (is_plugin_inactive('github-updater/github-updater.php')) {
+            ?>
+<div class="notice notice-error"><p>Bitte das Plugin <a href="https://www.web266.de/tutorials/github/github-updater/" target="_blank"><b>"GitHub-Updater"</b></a> herunterladen, installieren und aktivieren, um weiterhin Updates zu erhalten!</p></div>
+<?php
+}
+        ?>
+
             <?php settings_errors();?>
 
             <form method="post" action="options.php">
