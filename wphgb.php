@@ -5,14 +5,33 @@ Plugin URI:    https://github.com/m266/wp-h-guestbook
 Description:   Gästebuch auf Grundlage der Kommentarfunktion
 Author:        Hans M. Herbrand
 Author URI:    https://www.web266.de
-Version:       1.4
-Date:          2021-02-06
+Version:       1.5
+Date:          2021-03-15
 License:       GNU General Public License v2 or later
 License URI:   http://www.gnu.org/licenses/gpl-2.0.html
 GitHub Plugin URI: https://github.com/m266/wp-h-guestbook
  */
 // Externer Zugriff verhindern
 defined('ABSPATH') || exit();
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Check GitHub Updater aktiv
+// Anpassungen Plugin-Name und Funktions-Name vornehmen
+if (!function_exists('is_plugin_inactive')) {
+    require_once ABSPATH . '/wp-admin/includes/plugin.php';
+}
+if (is_plugin_inactive('github-updater/github-updater.php')) {
+// E-Mail an Admin senden, wenn inaktiv
+register_activation_hook( __FILE__, 'wphgb_activate' ); // Funktions-Name anpassen
+function wphgb_activate() { // Funktions-Name anpassen
+$to = get_option('admin_email');
+$subject = 'Plugin "WP H-Guestbook"'; // Plugin-Name anpassen
+$message = 'Bitte das Plugin "GitHub Updater" hier https://web266.de/tutorials/github/github-updater/ herunterladen, installieren und aktivieren, um weiterhin Updates zu erhalten!';
+wp_mail($to, $subject, $message );
+}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
 
 // Option Page
 class WPHGB {
@@ -55,22 +74,7 @@ class WPHGB {
         ?>
 </h2>
 <div class="card">
-
-<?php
-// GitHub-Updater inaktiv?
-        if (!function_exists('is_plugin_inactive')) {
-            require_once ABSPATH . '/wp-admin/includes/plugin.php';
-        }
-        if (is_plugin_inactive('github-updater/github-updater.php')) {
-            ?>
-<div class="notice notice-error"><p>Bitte das Plugin <a href="https://www.web266.de/tutorials/github/github-updater/" target="_blank"><b>"GitHub-Updater"</b></a> herunterladen, installieren und aktivieren, um weiterhin Updates zu erhalten!</p></div>
-<?php
-}
-        ?>
-
-            <?php settings_errors();?>
-
-            <form method="post" action="options.php">
+<form method="post" action="options.php">
                 <?php
 settings_fields('wphgb_option_group');
         do_settings_sections('wphgb-admin');
