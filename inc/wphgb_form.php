@@ -38,6 +38,10 @@ function wphgb_form_function() {
 .comments-title {
     display: none;
 }
+/* URL-Feld ausblenden */
+.comment-form-field-input-url {
+    display: none !important;
+}
 </style>
 <!-- Guestbook form -->
         <?php

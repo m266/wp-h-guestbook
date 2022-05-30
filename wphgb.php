@@ -5,8 +5,8 @@ Plugin URI:    https://herbrand.org/wordpress/eigene-plugins/wp-h-guestbook/
 Description:   Gästebuch auf Grundlage der Kommentarfunktion
 Author:        Hans M. Herbrand
 Author URI:    https://herbrand.org
-Version:       1.6
-Date:          2021-05-29
+Version:       1.7
+Date:          2022-05-30
 License:       GNU General Public License v2 or later
 License URI:   http://www.gnu.org/licenses/gpl-2.0.html
 GitHub Plugin URI: https://github.com/m266/wp-h-guestbook
